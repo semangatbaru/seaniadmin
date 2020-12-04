@@ -12,7 +12,30 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', 'App\Http\Controllers\web\LoginController@showFormLogin');
+Route::get('login', 'App\Http\Controllers\web\LoginController@showFormLogin')->name('login');
+Route::post('postLogin', 'App\Http\Controllers\web\LoginController@login')->name('postLogin');
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('register', 'App\Http\Controllers\web\LoginController@showFormRegister')->name('register');
+Route::post('postRegister', 'App\Http\Controllers\web\LoginController@register')->name('postRegister');
+
+
+Route::group(['middleware' => 'auth'], function () {
+ 
+    //home
+    Route::get('home', 'App\Http\Controllers\web\HomeController@index')->name('home');
+
+    //customer
+    Route::get('customer', 'App\Http\Controllers\web\CustomerController@index')->name('customer');
+
+    //info
+    Route::get('info', 'App\Http\Controllers\web\BeritaController@index')->name('info');
+    Route::post('postInfo', 'App\Http\Controllers\web\BeritaController@store')->name('postInfo');
+    
+    //logout
+    Route::get('logout', 'App\Http\Controllers\web\LoginController@logout')->name('logout');
+ 
 });
+
+
+

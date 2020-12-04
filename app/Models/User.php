@@ -11,13 +11,18 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+
+    protected $table = 'admin';
+
+    protected $primaryKey = 'id_admin';
+    public $timestamps = false;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name',
+        
         'email',
         'password',
     ];
