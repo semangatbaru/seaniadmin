@@ -6,23 +6,26 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Berita;
 use Validator;
-
+use Session;
+use DB;
 class BeritaController extends Controller
 {
     public function index(){
-        return view('menu.berita');
+        $data = DB::table('berita')->orderby('tanggal','desc')->get();
+        return view('menu.berita', ['data' => $data]);
     }
     public function store(Request $request)
     {
+        $input = $request->all();
         $rules = [
             'namaberita'           => 'required',
-            'foto'                 => 'required',
+            'foto'           => 'required',
             'deskripsi'            => 'required',
             'penulis'              => 'required',
         ];
  
         $messages = [
-            'namaberita.required'       => 'Nama Berita wajib diisi',
+            'namaberita.required'       => 'Judul Informasi wajib diisi',
             'foto.required'             => 'Foto wajib diisi',
             'deksripsi.required'        => 'Deskripsi wajib diisi',
             'penulis.required'          => 'Penulis wajib diisi',
@@ -34,32 +37,36 @@ class BeritaController extends Controller
         if($validator->fails()){
             return redirect()->back()->withErrors($validator)->withInput($request->all);
         }
-        date_default_timezone_set("asia/Ujung_Pandang");
-        $tgl = date('Y-m-d h:i:s');
+        date_default_timezone_set("asia/Jakarta");
+        $tgl = date('Y-m-d H:i:s');
  
 
-        $extension = $request->file('foto')->extension();
-        $imgname = $request->file('foto')->getClientOriginalName().'.'.$extension;
-        \Storage::putFileAs('public/images', $request->file('foto'), $imgname);
+        $image = $request->file('foto');
+        $x = $image->extension();
+        $name = date('dmyHis').'.'.$x;
 
-        $path = \Storage::url($imgname);
-        $berita = new Berita;
-        // $berita->deskripsi = $request->deskripsi;
-        // $berita->namaberita = $request->namaberita;
-        // $berita->id_berita = $request->id_berita;
-        // $berita->status = $request->status;
-        // $berita->status = $request->status;
-        $berita->tanggal = $tgl;
-        $berita->foto = $path;
-        $simpan = $berita->save();
+        \Storage::disk('public')->put($name, file_get_contents($image));
+
+       
+        $link = \Storage::url($name);
+        $gambar = url('/').$link;
+        $input['tanggal'] = $tgl;
+        $input['foto'] = $gambar;
+        $simpan = Berita::create($input);
 
         if($simpan){
             Session::flash('success', 'Register berhasil! Silahkan login untuk mengakses data');
-            return redirect()->route('home');
+            return redirect()->back();
         } else {
             Session::flash('errors', ['' => 'Register gagal! Silahkan ulangi beberapa saat lagi']);
             return redirect()->route('register');
         }
         
+    }
+    public function delete($id_berita)
+    {
+        DB::table('berita')->where('id_berita', $id_berita)->delete();
+
+        return redirect()->back()->with('success', 'Berhasil hapus data!');
     }
 }

@@ -31,7 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
     //info
     Route::get('info', 'App\Http\Controllers\web\BeritaController@index')->name('info');
     Route::post('postInfo', 'App\Http\Controllers\web\BeritaController@store')->name('postInfo');
-    
+    Route::get('deleteInfo/{id_berita}', 'App\Http\Controllers\web\BeritaController@delete')->name('deleteInfo');
     //logout
     Route::get('logout', 'App\Http\Controllers\web\LoginController@logout')->name('logout');
  
