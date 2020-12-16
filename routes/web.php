@@ -32,6 +32,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('info', 'App\Http\Controllers\web\BeritaController@index')->name('info');
     Route::post('postInfo', 'App\Http\Controllers\web\BeritaController@store')->name('postInfo');
     Route::get('deleteInfo/{id_berita}', 'App\Http\Controllers\web\BeritaController@delete')->name('deleteInfo');
+
+    //config
+    Route::get('config', 'App\Http\Controllers\web\ConfigController@index')->name('config');
+    Route::get('edit/{id_config}', 'App\Http\Controllers\web\ConfigController@edit')->name('edit');
+    Route::post('updateConfig', 'App\Http\Controllers\web\ConfigController@update')->name('updateConfig');
+
     //logout
     Route::get('logout', 'App\Http\Controllers\web\LoginController@logout')->name('logout');
  

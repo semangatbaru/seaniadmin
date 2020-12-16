@@ -141,27 +141,6 @@
                     </div>
                 </div>
 
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Data Customer</h3>
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                <i class="fas fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- /.card-header -->
-                        
-                                @foreach($data as $p)
-                               
-                                    <td>{{ $p->deskripsi }}</td>
-                                @endforeach
-                                
-                        <!-- /.card-body -->
-                    </div>
-                </div>
-
                 
             </div>
         </div>

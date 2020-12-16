@@ -205,7 +205,14 @@
               </p>
             </a>
           </li>
-          
+          <li class="nav-item">
+            <a href="{{url('config')}}" class="nav-link">
+              <i class="nav-icon fas fa-cog"></i>
+              <p>
+                Config
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
